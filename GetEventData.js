@@ -6,29 +6,27 @@ const saveEventDataModle = (() => {
             const eventTitle = forms.eventTitle.value
             const eventComment = forms.eventComment.value
 
-            let eventDates = {
-                eventData: eventData,
-                eventTitle: eventTitle,
-                eventComment:  eventComment
-            };
+            // ローカルステージから取り出し
+            const localEventDatelist = JSON.parse(localStorage.getItem("eventDatelist"));
+            console.log(localEventDatelist);
 
-            if(eventDates.eventData && eventDates.eventTitle && eventDates.eventComment) {
-                let eventDateLists = [];
-                console.log(eventDates.length);
-                for(let i = 0; i < eventDates.length; i++ ) {
-                    console.log(i);
-                    eventDateLists[i].push = ({
-                        value: eventDates
-                     });
-                    
-                }
+            eventDates = [
+                { eventData: eventData, eventTitle: eventTitle, eventComment: eventComment }
+            ];
 
-                // localStorage.setItem("eventDateLists", JSON.stringify(eventDateLists));
+            if(eventDates) {
+                let eventDatelist = [];
+                eventDates.forEach((value, index) => {
+                    eventDatelist.push(value);
+    
+                    // ローカルストレージへ保存
+                    localStorage.setItem("eventDatelist", JSON.stringify(eventDatelist));
+                });
             } else {
                 const errorMessage = document.getElementById("error_message");
                 errorMessage.textContent = "※入力がされていません。";
             }
-
+            
             
         }
 
