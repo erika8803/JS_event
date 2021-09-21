@@ -1,54 +1,33 @@
 const saveEventDataModle = (() => {
     return {
-        submitForm: () => {
+        submitForm: () => {            
             const forms = document.getElementById("form");
-            const eventData = forms.eventData.value
-            const eventTitle = forms.eventTitle.value
-            const eventComment = forms.eventComment.value
+            const eventData = forms.eventData.value;
+            const eventTitle = forms.eventTitle.value;
+            const eventComment = forms.eventComment.value;
+            const errorMessage = document.getElementById("error_message");
 
-            // ローカルステージから取り出し
-            const localEventDatelist = JSON.parse(localStorage.getItem("eventDatelist"));
-            console.log(localEventDatelist);
-
-            eventDates = [
-                { eventData: eventData, eventTitle: eventTitle, eventComment: eventComment }
-            ];
-
-            if(eventDates) {
-                let eventDatelist = [];
-                eventDates.forEach((value, index) => {
-                    eventDatelist.push(value);
-    
-                    // ローカルストレージへ保存
-                    localStorage.setItem("eventDatelist", JSON.stringify(eventDatelist));
-                });
-            } else {
-                const errorMessage = document.getElementById("error_message");
-                errorMessage.textContent = "※入力がされていません。";
+            let formEventData = { 
+                eventdata: eventData,
+                eventtitle: eventTitle, 
+                eventComment: eventComment
             }
-            
-            
+
+            // localStorageに値があるか確認
+            if ( localStorage.getItem('eventdata') == null ) {
+                localStorage.setItem('eventdata', '[]');
+            }
+
+            // formに入力されているか確認
+           if ( eventData == "" || eventTitle == "" || eventComment == "") {
+                errorMessage.textContent = "※入力がされていません。";
+           } else {
+                errorMessage.textContent = "";
+                
+                let saveEventData = JSON.parse(localStorage.getItem('eventdata', '[]'));
+                saveEventData.push( formEventData );
+                localStorage.setItem('eventdata', JSON.stringify(saveEventData));
+           }
         }
-
-    //     saveEvent: () => {
-    //         console.log(JSON.parse(localStorage.getItem("eventDates")));
-
-           
-    //         // const submitFormEvent = JSON.parse(localStorage.getItem("eventDates"));
-
-    //         // if (submitFormEvent) {
-    //         //     const events = [];
-    //         //     events.push({
-    //         //         text: eventDates
-    //         //     });
-
-    //         //     localStorage.setItem("events", JSON.stringify(events));
-
-    //         //     const eventList = document.getElementById("eventList");
-    //         //     eventList.textContent = '入力されています';
-    //         // };
-        
-    // },
-
     }
 })();
